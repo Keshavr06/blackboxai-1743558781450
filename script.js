@@ -1,6 +1,54 @@
 // Netflix Clone - Main JavaScript
+const moviesKey = 'netflix-movies';
+const authKey = 'netflix-admin';
+
+// Load movies from storage or use mock data
+let movies = JSON.parse(localStorage.getItem(moviesKey)) || [
+    {
+        id: 1,
+        title: "Stranger Things",
+        image: "https://images.pexels.com/photos/3945317/pexels-photo-3945317.jpeg",
+        description: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments."
+    },
+    {
+        id: 2,
+        title: "The Crown",
+        image: "https://images.pexels.com/photos/33129/popcorn-movie-party-entertainment.jpg",
+        description: "This drama follows the political rivalries and romance of Queen Elizabeth II's reign."
+    },
+    {
+        id: 3,
+        title: "Money Heist",
+        image: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg",
+        description: "An unusual group of robbers attempt to carry out the most perfect robbery in Spanish history."
+    }
+];
+
+// Add movie function
+function addMovie(newMovie) {
+    movies.push(newMovie);
+    localStorage.setItem(moviesKey, JSON.stringify(movies));
+}
+
+// Movie rendering function
+function renderMovies(container) {
+    if (!container) return;
+    container.innerHTML = '';
+    movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'movie-card p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-200';
+        card.innerHTML = `
+            <img src="${movie.image}" alt="${movie.title}" class="w-full h-64 object-cover rounded-lg">
+            <h3 class="text-lg font-semibold mt-2">${movie.title}</h3>
+        `;
+        container.appendChild(card);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Header scroll effect
+    // Render movies on index page
+    renderMovies(document.querySelector('.movie-grid'));
+
     const header = document.querySelector('header');
     if (header) {
         window.addEventListener('scroll', function() {
